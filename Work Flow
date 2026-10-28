@@ -1,0 +1,451 @@
+# 🔄 Project Workflow — Ice Cream Parlour Management System
+
+## 1. 🎯 Main Objective
+
+The Ice Cream Parlour Management System is a Java-based application designed to digitize and simplify the daily operations of an ice cream parlour using Core Java, JDBC, MySQL, and the DAO (Data Access Object) design pattern.
+
+The system provides two main modules: **Customer** and **Admin**. Customers can browse menu categories, select products, manage their cart, place orders, and receive bills. Administrators can authenticate themselves to manage menu items, maintain inventory, view orders, and access sales information.
+
+The DAO architecture separates database access operations from application logic, improving code organization, reusability, and maintainability without requiring changes to the existing MySQL database schema.
+
+## 2. 🏗️ Overall System Architecture
+
+```text
+              ICE CREAM PARLOUR MANAGEMENT SYSTEM
+                              |
+                              v
+                         Main.java
+                              |
+                              v
+                       Main Menu
+                              |
+                 +------------+------------+
+                 |                         |
+                 v                         v
+             CUSTOMER                    ADMIN
+                 |                         |
+                 v                         v
+          Customer Module             Admin Login
+                 |                         |
+                 v                         v
+           Menu and Cart             Admin Dashboard
+                 |                         |
+                 v              +----------+----------+
+          Order Processing       |          |          |
+                 |               v          v          v
+                 |             Menu       Stock     Reports
+                 |          Management  Management
+                 |               |          |          |
+                 +---------------+----------+----------+
+                                 |
+                                 v
+                          DAO ARCHITECTURE
+                                 |
+             +-------------------+-------------------+
+             |          |         |         |        |
+             v          v         v         v        v
+          AdminDAO  MenuCategory MenuItem  OrderDAO  BillDAO
+                       DAO         DAO
+                                 |
+                                 v
+                       DBConnecton.java
+                                 |
+                                 v
+                           JDBC Driver
+                                 |
+                                 v
+                         Existing MySQL DB
+```
+
+## 3. 🔄 Complete Application Workflow
+
+```text
+START
+  |
+  v
+Run Main.java
+  |
+  v
+Establish MySQL Connection
+  |
+  v
+Connection Successful?
+  |
+  +---- NO ----> Display Error Message
+  |                       |
+  |                       v
+  |                      EXIT
+  |
+  +---- YES
+          |
+          v
+      Display Main Menu
+          |
+          v
+      Select User Type
+          |
+     +----+----+
+     |         |
+     v         v
+  CUSTOMER   ADMIN
+     |         |
+     v         v
+  View Menu  Admin Login
+     |         |
+     v         v
+  Search /   Validate Credentials
+  Filter        |
+     |      +---+---+
+     |      |       |
+     |      v       v
+     |   Invalid   Valid
+     |      |       |
+     |      v       v
+     |   Retry    Dashboard
+     |              |
+     |              v
+     |       Select Admin Operation
+     |              |
+     |       +------+------+------+
+     |       |      |      |      |
+     |       v      v      v      v
+     |     Menu   Stock  Orders  Reports
+     |     CRUD   Alert  /Bills
+     |       |      |      |      |
+     |       +------+------+------+
+     |              |
+     |              v
+     |          DAO Layer
+     |              |
+     |              v
+     |          MySQL Database
+     |
+     v
+  View Product Details
+     |
+     v
+  Select Item and Quantity
+     |
+     v
+  Add to Cart
+     |
+     v
+  Review / Modify Cart
+     |
+     v
+  Confirm Order
+     |
+     v
+  Validate Product and Stock
+     |
+     +---- INVALID ----> Display Message
+     |                          |
+     |                          v
+     |                      Modify Cart
+     |
+     +---- VALID
+              |
+              v
+        Calculate Total
+              |
+              v
+        OrderDAO Processing
+              |
+              v
+        Save Order Details
+              |
+              v
+        Update Inventory
+              |
+              v
+        BillDAO Processing
+              |
+              v
+        Generate Bill
+              |
+              v
+        Save Sales Record
+              |
+              v
+        Display Bill
+              |
+              v
+             END
+```
+
+## 4. 👤 Customer Module Workflow
+
+```text
+Customer
+   |
+   v
+Open Customer Module
+   |
+   v
+View Menu Categories
+   |
+   v
+Select Category
+   |
+   v
+View Available Products
+   |
+   v
+Search / Filter Products
+   |
+   v
+View Product Details
+   |
+   v
+Select Product and Quantity
+   |
+   v
+Add Product to Cart
+   |
+   v
+Continue Shopping?
+   |
+   +---- YES ----> Return to Menu
+   |
+   +---- NO
+           |
+           v
+       View Cart
+           |
+           v
+       Modify Quantity / Remove Items
+           |
+           v
+       Confirm Order
+           |
+           v
+       Validate Stock
+           |
+           v
+       Calculate Grand Total
+           |
+           v
+       Place Order
+           |
+           v
+       Generate Bill
+           |
+           v
+       Display Order Summary
+           |
+           v
+          END
+```
+
+Customers have access only to purchasing-related functionality. Administrative actions, such as adding products, changing prices, deleting items, and viewing sales reports, are restricted to the admin module.
+
+## 5. 🔐 Admin Module Workflow
+
+```text
+Admin
+  |
+  v
+Admin Login
+  |
+  v
+Enter Username and Password
+  |
+  v
+Validate Credentials using AdminDAO
+  |
+  v
+Credentials Valid?
+  |
+  +---- NO ----> Display Error
+  |                  |
+  |                  v
+  |              Retry Login
+  |
+  +---- YES
+          |
+          v
+      Admin Dashboard
+          |
+          v
+      Select Operation
+          |
+    +-----+------+------+------+------+
+    |     |      |      |      |      |
+    v     v      v      v      v      v
+   Add   View  Update Delete Search Stock
+   Item  Items Items  Item  Items Alert
+    |     |      |      |      |      |
+    +-----+------+------+------+------+
+                      |
+                      v
+                 DAO Classes
+                      |
+                      v
+                 MySQL Database
+                      |
+                      v
+               Display Operation Result
+                      |
+                      v
+              Continue or Logout
+                      |
+                      v
+                     END
+```
+
+## 6. 🔌 DAO Architecture Workflow
+
+The DAO pattern provides a separate layer for database access operations.
+
+```text
+Application Classes
+       |
+       v
+Business / Application Logic
+       |
+       v
+DAO Interface or DAO Class Methods
+       |
+       +-------------------------------+
+       |         |          |          |
+       v         v          v          v
+   AdminDAO  MenuItemDAO  OrderDAO   BillDAO
+       |         |          |          |
+       +---------+----------+----------+
+                         |
+                         v
+                  DBConnecton.java
+                         |
+                         v
+                     JDBC Driver
+                         |
+                         v
+                   MySQL Database
+                         |
+                         v
+                Query Results / Status
+                         |
+                         v
+                  Calling Application
+```
+
+### DAO Responsibilities
+
+| Class | Responsibility |
+|---|---|
+| `AdminDAO` | Administrator authentication queries |
+| `MenuCategoryDAO` | Menu category database operations |
+| `MenuItemDAO` | Menu item CRUD and search operations |
+| `OrderDAO` | Order persistence and related stock operations |
+| `BillDAO` | Bill creation and retrieval |
+| `DBConnecton` | Establishes the JDBC connection to MySQL |
+
+## 7. 🛒 Cart and Order Processing Workflow
+
+```text
+Select Menu Items
+       |
+       v
+Add Items to Cart
+       |
+       v
+Calculate Item Subtotals
+       |
+       v
+Display Cart
+       |
+       v
+Confirm Order
+       |
+       v
+Validate Item IDs and Quantities
+       |
+       v
+Check Available Stock
+       |
+       +---- Insufficient Stock
+       |          |
+       |          v
+       |    Display Stock Message
+       |          |
+       |          v
+       |    Modify Cart / Retry
+       |
+       +---- Sufficient Stock
+                  |
+                  v
+           Calculate Grand Total
+                  |
+                  v
+           Begin Database Transaction
+                  |
+                  v
+           Save Order and Items
+                  |
+                  v
+           Reduce Product Stock
+                  |
+                  v
+           Commit Transaction
+                  |
+                  v
+           Generate and Store Bill
+                  |
+                  v
+           Store Sales Information
+                  |
+                  v
+           Display Final Bill
+```
+
+For reliable order processing, order creation and stock updates should be handled transactionally so that a failed order does not leave stock quantities or order records inconsistent. Billing and sales persistence should also handle failures appropriately.
+
+## 8. 📦 Inventory and Low-Stock Workflow
+
+```text
+Admin Opens Stock Management
+             |
+             v
+      Retrieve Menu Items
+             |
+             v
+      Display Available Stock
+             |
+             v
+      Check Stock Threshold
+             |
+             v
+      Stock Below Threshold?
+             |
+        +----+----+
+        |         |
+        v         v
+       YES        NO
+        |         |
+        v         v
+   Show Low     Stock Normal
+   Stock Alert
+        |
+        v
+   Admin Updates Stock
+        |
+        v
+   Save Changes through DAO
+        |
+        v
+   Update MySQL Database
+```
+
+The minimum-stock threshold can be configured according to business requirements. For example, if the threshold is five units and a product has only three units remaining, the system can flag that product for replenishment.
+
+## 9. 🧾 Billing and Sales Workflow
+
+```text
+Successful Order
+       |
+       v
+Retrieve Ordered Items
+       |
+       v
+Calculate Item Total
+(Price
