@@ -57,9 +57,9 @@ The application connects to a MySQL database using JDBC and performs database op
 - Generate bills associated with orders.
 - Retrieve bill information using bill or order IDs.
 
-## 🆕 What's New in This Version?
+## 🆕 What's New in This ?
 
-The updated version introduces the **DAO (Data Access Object) pattern**, which was not implemented in the earlier version of this project.
+This Concept introduces the **DAO (Data Access Object) pattern**, which was not implemented in the earlier version of this project.
 
 DAO classes centralize database-related operations instead of placing all SQL logic directly in application classes.
 
