@@ -1,0 +1,73 @@
+## Project Idea
+
+The main idea behind developing the **Ice Cream Parlour Management System** is to convert the day-to-day operations of an ice cream parlour into a simple, organized, and efficient digital system.
+
+In a traditional parlour, activities such as managing menu items, checking stock, processing customer orders, calculating bills, and maintaining sales records may be handled manually. This can consume time and may lead to errors in billing, inventory management, and record maintenance.
+
+This project brings these activities together in one application using Core Java, JDBC, and MySQL. It also incorporates the **Data Access Object (DAO) design pattern** to separate database operations from the main application logic, making the code more modular, reusable, and easier to maintain.
+
+The system provides separate modules for customers and administrators. Customers can browse menu items, place orders, and receive bills, while administrators can manage menu items, update stock, and access relevant records.
+
+## Project Working Modules
+
+```text
+Ice-Cream-Parlour-Management-System/
+│
+├── README.md
+├── IDEA.md
+├── .gitignore
+│
+├── src/
+│   ├── IceCream/
+│   │   │
+│   │   ├── Main.java
+│   │   ├── DBConnecton.java
+│   │   ├── MenuItems.java
+│   │   │
+│   │   ├── AdminLogin.java
+│   │   ├── AdminDashboard.java
+│   │   │
+│   │   ├── AddIceCream.java
+│   │   ├── ViewIceCream.java
+│   │   ├── UpdateMenuItem.java
+│   │   ├── SearchMenuItem.java
+│   │   ├── DeleteMenuItem.java
+│   │   │
+│   │   ├── Cart.java
+│   │   ├── OrderIceCream.java
+│   │   ├── Bill.java
+│   │   │
+│   │   ├── StockAlert.java
+│   │   └── SalesReport.java
+│   │
+│   └── DAO/
+│       │
+│       ├── AdminDAO.java
+│       ├── MenuCategoryDAO.java
+│       ├── MenuItemDAO.java
+│       ├── OrderDAO.java
+│       └── BillDAO.java
+│
+├── database/
+│   └── Tables.sql
+│
+└── documentation/
+    ├── project-flowchart.png
+    ├── dao-architecture.png
+    ├── database-design.png
+    └── screenshots/
+```
+
+## DAO Concept in the Project
+
+The DAO (Data Access Object) layer is responsible for handling database-related operations separately from the main application classes.
+
+- `AdminDAO.java` — handles administrator authentication-related database operations.
+- `MenuCategoryDAO.java` — manages menu category data.
+- `MenuItemDAO.java` — handles menu item insertion, retrieval, updating, searching, and deletion.
+- `OrderDAO.java` — manages customer orders, order details, and related stock operations.
+- `BillDAO.java` — handles bill creation and retrieval.
+
+The application uses `DBConnecton.java` to establish a JDBC connection to the existing MySQL database. The DAO classes use this connection to execute the required database operations.
+
+**Note:** The folder structure above is a suggested documentation layout. Keep the actual package names and file locations consistent with your uploaded Java project. The DAO classes organize database access in Java and do not require changes to the existing MySQL database schema by themselves.
